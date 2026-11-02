@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased selection:bg-ub-blue-600 selection:text-white;
+  }
+}
+
+.gradient-ub {
+  background: linear-gradient(135deg, #001D40 0%, #002D62 50%, #003D82 100%);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #F0BC4A 0%, #E5A823 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
