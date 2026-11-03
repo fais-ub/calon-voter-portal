@@ -365,12 +365,7 @@ export const VoterForm: React.FC<VoterFormProps> = ({ onSuccess }) => {
                   className="mt-1 w-4 h-4 text-ub-blue-700 focus:ring-ub-blue-600"
                 />
                 <div className="flex-1">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-bold text-sm text-slate-800">{item.label}</span>
-                    <span className="text-[10px] font-semibold text-ub-gold-700 bg-ub-gold-50 px-2 py-0.5 rounded border border-ub-gold-200">
-                      {item.weightInfo}
-                    </span>
-                  </div>
+                  <span className="font-bold text-sm text-slate-800">{item.label}</span>
                   <p className="text-xs text-slate-500 mt-1 leading-relaxed">{item.description}</p>
                 </div>
               </label>

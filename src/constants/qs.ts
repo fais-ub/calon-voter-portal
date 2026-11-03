@@ -12,7 +12,6 @@ export interface SubjectOption {
   value: QSBroadSubject;
   label: string;
   description: string;
-  weightInfo: string;
 }
 
 export const QS_BROAD_SUBJECTS: SubjectOption[] = [
@@ -20,31 +19,26 @@ export const QS_BROAD_SUBJECTS: SubjectOption[] = [
     value: 'Arts & Humanities',
     label: 'Arts & Humanities',
     description: 'Architecture, Art & Design, History, Linguistics, Philosophy, Literature, Performing Arts',
-    weightInfo: 'QS Subject Weight 20%',
   },
   {
     value: 'Engineering & Technology',
     label: 'Engineering & Technology',
     description: 'Computer Science, Mechanical, Civil, Electrical, Chemical, Mining, Petroleum Engineering',
-    weightInfo: 'QS Subject Weight 20%',
   },
   {
     value: 'Life Sciences & Medicine',
     label: 'Life Sciences & Medicine',
     description: 'Medicine, Pharmacy, Biological Sciences, Agriculture & Forestry, Nursing, Veterinary Science',
-    weightInfo: 'QS Subject Weight 20%',
   },
   {
     value: 'Natural Sciences',
     label: 'Natural Sciences',
     description: 'Chemistry, Earth & Marine Sciences, Environmental Sciences, Geography, Materials, Mathematics, Physics',
-    weightInfo: 'QS Subject Weight 20%',
   },
   {
     value: 'Social Sciences & Management',
     label: 'Social Sciences & Management',
     description: 'Business & Management, Accounting & Finance, Economics, Education, Law, Politics, Sociology',
-    weightInfo: 'QS Subject Weight 20%',
   },
 ];
 
