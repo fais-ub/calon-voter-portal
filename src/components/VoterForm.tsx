@@ -42,6 +42,7 @@ export const VoterForm: React.FC<VoterFormProps> = ({ onSuccess }) => {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [emailWarning, setEmailWarning] = useState<string | null>(null);
+  const [phoneWarning, setPhoneWarning] = useState<string | null>(null);
 
   // Email validation check
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +72,27 @@ export const VoterForm: React.FC<VoterFormProps> = ({ onSuccess }) => {
     }
   };
 
+  // Phone / WhatsApp validation check
+  const handleWhatsappChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setWhatsapp(val);
+    setPhoneWarning(null);
+
+    if (val.trim()) {
+      const phoneRegex = /^[+]?[\d\s\-()]+$/;
+      if (!phoneRegex.test(val.trim())) {
+        setPhoneWarning('Phone number may only contain digits, spaces, hyphens, and leading +.');
+        return;
+      }
+      const digitsOnly = val.replace(/\D/g, '');
+      if (digitsOnly.length > 0 && digitsOnly.length < 8) {
+        setPhoneWarning('Phone number is too short (minimum 8 digits required).');
+      } else if (digitsOnly.length > 15) {
+        setPhoneWarning('Phone number exceeds standard length (maximum 15 digits).');
+      }
+    }
+  };
+
   // Submit Handler
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -85,12 +107,15 @@ export const VoterForm: React.FC<VoterFormProps> = ({ onSuccess }) => {
       setFormError('Please provide your university or research institution name.');
       return;
     }
-    if (!email.trim() || !email.includes('@')) {
-      setFormError('Please enter a valid official institutional email.');
+
+    // Email Validations
+    const emailLower = email.toLowerCase().trim();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailLower || !emailRegex.test(emailLower)) {
+      setFormError('Please enter a valid official institutional email address (e.g. name@university.edu).');
       return;
     }
 
-    const emailLower = email.toLowerCase().trim();
     const domain = emailLower.split('@')[1];
 
     if (FORBIDDEN_PUBLIC_DOMAINS.some((d) => domain === d || domain.endsWith('.' + d))) {
@@ -104,6 +129,27 @@ export const VoterForm: React.FC<VoterFormProps> = ({ onSuccess }) => {
       setFormError(
         'Submission blocked: Self-affiliation conflict. Academic voters must be affiliated with an external institution outside Universitas Brawijaya.'
       );
+      return;
+    }
+
+    // Phone / WhatsApp Validation (Required, 8-15 digits)
+    const phoneTrimmed = whatsapp.trim();
+    if (!phoneTrimmed) {
+      setFormError('Please enter your WhatsApp / mobile phone number.');
+      return;
+    }
+    const phoneRegex = /^[+]?[\d\s\-()]+$/;
+    if (!phoneRegex.test(phoneTrimmed)) {
+      setFormError('Invalid phone number format. Only digits, spaces, hyphens, and leading + are permitted.');
+      return;
+    }
+    const digitsOnly = phoneTrimmed.replace(/\D/g, '');
+    if (digitsOnly.length < 8) {
+      setFormError('Phone number is too short. Minimum 8 digits are required.');
+      return;
+    }
+    if (digitsOnly.length > 15) {
+      setFormError('Phone number is too long. Standard international numbers contain at most 15 digits.');
       return;
     }
 
@@ -382,21 +428,37 @@ export const VoterForm: React.FC<VoterFormProps> = ({ onSuccess }) => {
             </p>
           </div>
 
-          {/* WhatsApp / Phone (Optional) */}
+          {/* WhatsApp / Phone (Required) */}
           <div className="sm:col-span-2">
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-              WhatsApp / Mobile Phone <span className="text-slate-400 font-normal">(Optional, for reminder)</span>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
+              <span>
+                WhatsApp / Mobile Phone <span className="text-red-500">*</span>
+              </span>
+              <span className="text-[11px] text-slate-500 font-medium">8–15 digits</span>
             </label>
             <div className="relative">
               <input
                 type="tel"
+                required
                 value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value)}
+                onChange={handleWhatsappChange}
                 placeholder="+61 400 123 456 or +62 812 3456 7890"
-                className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-2 focus:ring-ub-blue-600 focus:border-transparent outline-none transition"
+                className={`w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border rounded-lg text-sm text-slate-800 focus:ring-2 outline-none transition ${
+                  phoneWarning
+                    ? 'border-amber-400 focus:ring-amber-500'
+                    : 'border-slate-300 focus:ring-ub-blue-600 focus:border-transparent'
+                }`}
               />
               <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
             </div>
+
+            {/* Phone warning callout */}
+            {phoneWarning && (
+              <div className="mt-2 p-2.5 bg-amber-50 border border-amber-300 rounded-lg flex items-start gap-2 text-xs text-amber-900">
+                <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <p>{phoneWarning}</p>
+              </div>
+            )}
             <p className="text-[11px] text-slate-400 mt-1">
               Used strictly by the Universitas Brawijaya WCU Taskforce for sending a polite reminder when QS releases the survey.
             </p>
