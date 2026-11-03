@@ -8,11 +8,11 @@ export const Header: React.FC = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Institution Logo & Identity */}
           <div className="flex items-center gap-4 text-center md:text-left">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-ub-gold-400 to-ub-gold-600 p-0.5 shadow-md flex items-center justify-center shrink-0">
-              <div className="w-full h-full rounded-full bg-ub-blue-900 flex items-center justify-center text-ub-gold-400 font-bold text-xl tracking-wider">
-                UB
-              </div>
-            </div>
+            <img
+              src="/logo-ub.svg"
+              alt="Universitas Brawijaya"
+              className="w-14 h-14 sm:w-16 sm:h-16 object-contain shrink-0 drop-shadow-md"
+            />
             <div>
               <div className="flex items-center justify-center md:justify-start gap-2">
                 <span className="text-xs uppercase tracking-widest font-semibold text-ub-gold-400">
